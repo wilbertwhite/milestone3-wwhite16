@@ -1,0 +1,100 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <h1>
+        Welcome {{username}}! :)
+    </h1>
+    <div class="clearfix">
+        <a><img src="{{poster}}" /></a>
+
+        <div class="text">
+            <div class="title">
+                <b>{{title}}</b>
+            </div>
+
+            <div>
+                {% for i in range(0, len)%}
+                {% if i != len-1 %}
+                {{genres[i]}},
+                {% else %}
+                {{genres[i]}}
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="tagline">
+                {{tagline}}
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="link">
+        <a href="{{url}}" target="_blank">Visit the wiki for more info!</a>
+    </div>
+
+    <div class="comment_section">
+
+        <h3>{{count}} Comments</h3>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="{{ category }}"><b>{{message}}</b></div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div>
+            <form method="POST" action="/handle_review">
+                <textarea rows="1" cols="2" name="rating"></textarea>
+                <label>/10</label>
+                <br />
+                <textarea rows="5" cols="50" name="comment" placeholder="Add a comment..."></textarea>
+                <input type="submit" value="Comment" />
+                <input name="movie" value="{{title}}" readonly>
+            </form>
+        </div>
+
+        {% if len_reviews == 0 %}
+        <div class="no_comments">
+            <h3>No Comments Yet</h3>
+            <p>Start the discussion!</p>
+        </div>
+        {% endif %}
+        {% for i in range(len_reviews) %}
+        <div class="flex-container">
+            <p class="username"><b>{{reviews[i].username}}</b></p>
+            {% if reviews[i].rating|length %}
+            <i class="rating">rated {{reviews[i].rating}}/10</i>
+            {% endif %}
+            {% if reviews[i].comment|length %}
+            <div class="break">"{{reviews[i].comment}}"</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+        <a href="{{ url_for('bp.index') }}">
+            Your Reviews
+        </a>
+        <a href="{{ url_for('user_reviews') }}">
+            check
+        </a>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
