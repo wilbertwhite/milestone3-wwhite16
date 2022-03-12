@@ -1,9 +1,6 @@
-import os
-
-from numpy import require
-import tmdb
-import wiki
+"""Flask app to display a random movie and leave comments"""
 import random
+import os
 from flask import (
     Flask,
     render_template,
@@ -24,6 +21,10 @@ from flask_login import (
     login_user,
     logout_user,
 )
+import tmdb
+
+import wiki
+
 
 load_dotenv(find_dotenv())
 
@@ -42,11 +43,15 @@ db = SQLAlchemy(app)
 
 
 class User(UserMixin, db.Model):
+    """Model for users"""
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20))
 
 
 class Review(db.Model):
+    """Model for reviews"""
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20))
     comment = db.Column(db.String(120))
@@ -63,16 +68,19 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads user according to their user ID."""
     return User.query.get(int(user_id))
 
 
 @app.route("/")
 def login():
+    """Displays the login page."""
     return render_template("login.html")
 
 
 @app.route("/handle_login", methods=["POST"])
 def handle_login():
+    """Logs the user in with the specified username."""
     data = request.form
     username = data["username"]
     user = User.query.filter_by(username=username).first()
@@ -87,11 +95,13 @@ def handle_login():
 
 @app.route("/signup")
 def signup():
+    """Displays the signup page."""
     return render_template("signup.html")
 
 
 @app.route("/handle_signup", methods=["POST"])
 def handle_signup():
+    """Registers a new user upon successful registration."""
     data = request.form
     username = data["username"]
     user = User.query.filter_by(username=username).first()
@@ -114,6 +124,7 @@ def handle_signup():
 @app.route("/home")
 @login_required
 def home():
+    """Homepage for the app. Displays a random movie as well as a comments section."""
     r = random.randrange(0, 3, 1)
     movies = ["508442", "680", "68718"]
     movieNames = ["Soul_(2020_film)", "Pulp_Fiction", "Django_Unchained"]
@@ -140,6 +151,7 @@ def home():
 @app.route("/handle_review", methods=["POST"])
 @login_required
 def handle_review():
+    """Saves a review to database if there's a comment and or valid rating present."""
     data = request.form
     comment = data["comment"]
     rating = data["rating"]
@@ -165,6 +177,7 @@ def handle_review():
 @app.route("/user_reviews")
 @login_required
 def user_reviews():
+    """API endpoint for all reviews posted by the logged in user."""
     username = current_user.username
     reviewQuery = Review.query.filter_by(username=username).all()
     reviews = []
@@ -183,6 +196,7 @@ def user_reviews():
 @app.route("/logout")
 @login_required
 def logout():
+    """Logs out current user."""
     logout_user()
     flash("Successfully logged out! :)", category="success")
     return redirect(url_for("login"))
@@ -201,6 +215,7 @@ bp = Blueprint(
 # route for serving React page
 @bp.route("/literallyinsane")
 def index():
+    """Displays the edit reviews page."""
     # NB: DO NOT add an "index.html" file in your normal templates folder
     # Flask will stop serving this React page correctly
     return render_template("index.html")
@@ -209,6 +224,7 @@ def index():
 @bp.route("/handle_user_reviews", methods=["GET", "POST"])
 @login_required
 def handle_user_reviews():
+    """Deletes reviews from database based on data sent from react server."""
     data = request.get_json()
     username = current_user.username
     reviewQuery = Review.query.filter_by(username=username).all()
