@@ -107,18 +107,17 @@ function App() {
           type="submit"
           value="Submit"
           onClick={async () => {
-            const review = { data };
             const response = await fetch("/handle_user_reviews", {
               method: "POST",
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(review)
+              body: JSON.stringify(data)
             })
 
             if (response.ok) {
               console.log("it worked")
-              console.log(response)
+              alert(response)
             }
           }
 

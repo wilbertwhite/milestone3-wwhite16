@@ -177,13 +177,6 @@ def user_reviews():
     return jsonify(reviews)
 
 
-@app.route("/handle_user_reviews", methods=["GET", "POST"])
-@login_required
-def handle_user_reviews():
-    data = request.get_json()
-    return data
-
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -208,6 +201,13 @@ def index():
     # NB: DO NOT add an "index.html" file in your normal templates folder
     # Flask will stop serving this React page correctly
     return render_template("index.html")
+
+
+@bp.route("/handle_user_reviews", methods=["GET", "POST"])
+@login_required
+def handle_user_reviews():
+    data = request.get_json()
+    return ""
 
 
 app.register_blueprint(bp)
