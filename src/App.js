@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import './App.css';
+import './style.css';
 
 function App() {
   const [data, setData] = useState([]);
@@ -21,7 +21,7 @@ function App() {
 
       <div className="Comment">
         <div className="Movie">
-          Your Review of {props.movie}:
+          <b>Your Review of {props.movie}:</b>
         </div>
         {rating.length > 0 &&
           <div className="Rating">
@@ -59,9 +59,14 @@ function App() {
     );
     return (
       <div>
-        <ul>
-          {listReviews}
-        </ul>
+        {listReviews.length > 0 &&
+          <ul>
+            {listReviews}
+          </ul>
+        }
+        {listReviews.length === 0 &&
+          <div>No Comments</div>
+        }
       </div>
     );
   }
@@ -77,19 +82,24 @@ function App() {
     setData([...newState])
   }
 
-  function handleClickSave() {
-    fetch('/handle_user_reviews', {
+  const handleClickSave = async () => {
+    const response = await fetch("/handle_user_reviews", {
       method: "POST",
       headers: {
-        'Content-type': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     })
-      .then((result) => result.json())
-      .then((info) => { console.log(info); })
+
+    if (response.ok) {
+      console.log("it worked")
+      console.log(response)
+      console.log(data)
+    }
   }
 
-  /*
+
+  /*remnants of edit
   function handleChangeEdit(event) {
     console.log(event.target.value)
     const newData = data.slice()
@@ -99,31 +109,20 @@ function App() {
   */
 
   return (
-    <div>
-      {console.log(data)}
-      <ReviewList reviews={data} />
-      <form>
-        <button
-          type="submit"
-          value="Submit"
-          onClick={async () => {
-            const response = await fetch("/handle_user_reviews", {
-              method: "POST",
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-            })
-
-            if (response.ok) {
-              console.log("it worked")
-              alert(response)
-            }
-          }
-
-          }>Submit</button>
-      </form>
-    </div>
+    <body>
+      <h1>Edit Your Reviews</h1>
+      <div>
+        {console.log(data)}
+        <ReviewList reviews={data} />
+        <form>
+          <button
+            className="SaveButton"
+            type="submit"
+            value="Save"
+            onClick={handleClickSave}>Save</button>
+        </form>
+      </div>
+    </body>
   );
 
 }

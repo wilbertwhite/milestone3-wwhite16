@@ -1,0 +1,117 @@
+body {
+    font-family: 'Georgia', serif;
+    background-color: rgb(22, 22, 22);
+    color : white;
+}
+
+img{
+    float: left;
+    padding-right: 30px;
+}
+
+.clearfix{
+    background-image: linear-gradient(to right, rgb(22, 22, 22), rgba(85, 38, 69, 0.712)), url("/static/a3Q5VW5_460s.jpeg");
+    margin: auto;
+    width: 60%;
+    overflow : auto;
+    padding: 30px;
+}
+
+.text{
+    padding: 200px 0px;
+}
+
+h1{
+    text-align : center;
+}
+
+.title{
+    font-size: 50px;
+}
+
+.tagline{
+    color: gray;
+    font-style:italic;
+}
+
+.link{
+    text-align : center;
+    padding : 20px;
+}
+
+.no_comments{
+    text-align:center;
+    padding:30px;
+}
+
+.comment_section{
+    margin:auto;
+    width: 60%;
+    padding: 30px;
+}
+
+textarea, input{
+    color: white;
+    background-color:rgb(22,22,22)
+}
+
+textarea:focus, input:focus{
+    color: white;
+}
+
+.flex-container{
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 20px;
+}
+
+.username{
+    margin: 3px;
+    flex-grow: 0;
+}
+
+.rating{
+    color: gray;
+    font-size: 12;
+    margin: 3px;
+    flex-grow: 0;
+    text-align: center;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+  }
+
+.auth{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+    text-align: center;
+}
+
+button{
+    color: white;
+    background-color:rgb(22, 22, 22);
+}
+
+.error{
+    color: red;
+}
+
+.success{
+    color:white;
+}
+
+.Comment-delete, .Comment-text, .Rating{
+    text-indent: 20px;
+    padding: 3px;
+}
+
+.Comment{
+    padding: 20px;
+}

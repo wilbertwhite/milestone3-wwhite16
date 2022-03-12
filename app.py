@@ -1,4 +1,6 @@
 import os
+
+from numpy import require
 import tmdb
 import wiki
 import random
@@ -34,6 +36,7 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 db = SQLAlchemy(app)
 
@@ -207,7 +210,23 @@ def index():
 @login_required
 def handle_user_reviews():
     data = request.get_json()
-    return ""
+    username = current_user.username
+    reviewQuery = Review.query.filter_by(username=username).all()
+
+    reviewIDs = []
+    for review in reviewQuery:
+        reviewIDs.append(review.id)
+
+    stillIDs = []
+    for comment in data:
+        stillIDs.append(comment["id"])
+
+    for id in reviewIDs:
+        if id not in stillIDs:
+            Review.query.filter_by(id=id).delete()
+            db.session.commit()
+
+    return redirect(url_for("bp.index"))
 
 
 app.register_blueprint(bp)
