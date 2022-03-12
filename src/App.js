@@ -14,6 +14,7 @@ function App() {
     fetchData()
   }, [])
 
+  /* review component */
   function Review(props) {
     const rating = props.rating;
     const comment = props.comment;
@@ -43,6 +44,7 @@ function App() {
     )
   }
 
+  /* function to display all review components as list */
   function ReviewList(props) {
     const reviews = props.reviews;
 
@@ -72,7 +74,8 @@ function App() {
   }
 
 
-
+  /* function to handle data state upon 
+  clicking delete button */
   function handleClickDelete(index) {
     console.log(index)
     const newData = data
@@ -82,6 +85,10 @@ function App() {
     setData([...newState])
   }
 
+
+  /* function to send review 
+  data to flask server upon
+  clicking save button */
   const handleClickSave = async () => {
     const response = await fetch("/handle_user_reviews", {
       method: "POST",

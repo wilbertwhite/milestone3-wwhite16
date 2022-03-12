@@ -115,3 +115,7 @@ button{
 .Comment{
     padding: 20px;
 }
+
+.SaveButton{
+    padding-left: 30px;
+}
