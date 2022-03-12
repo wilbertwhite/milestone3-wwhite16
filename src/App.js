@@ -62,9 +62,18 @@ function App() {
     return (
       <div>
         {listReviews.length > 0 &&
-          <ul>
-            {listReviews}
-          </ul>
+          <div>
+            <ul>
+              {listReviews}
+            </ul>
+            <form>
+              <button
+                className="SaveButton"
+                type="submit"
+                value="Save"
+                onClick={handleClickSave}>Save</button>
+            </form>
+          </div>
         }
         {listReviews.length === 0 &&
           <div>No Comments</div>
@@ -121,13 +130,6 @@ function App() {
       <div>
         {console.log(data)}
         <ReviewList reviews={data} />
-        <form>
-          <button
-            className="SaveButton"
-            type="submit"
-            value="Save"
-            onClick={handleClickSave}>Save</button>
-        </form>
       </div>
     </body>
   );
