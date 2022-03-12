@@ -168,13 +168,20 @@ def user_reviews():
     for review in reviewQuery:
         reviews.append(
             {
-                "username": review.username,
+                "id": review.id,
                 "rating": review.rating,
                 "comment": review.comment,
                 "movie": review.movie,
             }
         )
     return jsonify(reviews)
+
+
+@app.route("/handle_user_reviews", methods=["GET", "POST"])
+@login_required
+def handle_user_reviews():
+    data = request.get_json()
+    return data
 
 
 @app.route("/logout")
@@ -196,7 +203,7 @@ bp = Blueprint(
 )
 
 # route for serving React page
-@bp.route("/literalinsanity")
+@bp.route("/literallyinsane")
 def index():
     # NB: DO NOT add an "index.html" file in your normal templates folder
     # Flask will stop serving this React page correctly
