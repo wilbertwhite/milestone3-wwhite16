@@ -3,6 +3,7 @@ import './style.css';
 
 function App() {
   const [data, setData] = useState([]);
+  const [saveClicked, setSaveClicked] = useState(false)
 
   const fetchData = async () => {
     const response = await fetch("/user_reviews")
@@ -66,13 +67,6 @@ function App() {
             <ul>
               {listReviews}
             </ul>
-            <form>
-              <button
-                className="SaveButton"
-                type="submit"
-                value="Save"
-                onClick={handleClickSave}>Save</button>
-            </form>
           </div>
         }
         {listReviews.length === 0 &&
@@ -112,6 +106,9 @@ function App() {
       console.log(response)
       console.log(data)
     }
+    if (saveClicked === false) {
+      setSaveClicked(true)
+    }
   }
 
 
@@ -131,6 +128,18 @@ function App() {
         {console.log(data)}
         <ReviewList reviews={data} />
       </div>
+      <form>
+        <button
+          className="SaveButton"
+          type="submit"
+          value="Save"
+          onClick={handleClickSave}>Save</button>
+      </form>
+      {saveClicked === true
+        && <div>
+          Reviews saved successfully
+        </div>
+      }
     </body>
   );
 
